@@ -100,7 +100,8 @@ async function main() {
       venue: "Gelora Bung Karno Stadium",
       isFree: false,
       price: 350000,
-      bannerUrl: "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684495/events/maroon5-greatest-hits.jpg",
+      bannerUrl:
+        "https://res.cloudinary.com/kivc3ajv/image/upload/v1785693064/marron5_z9kdqf.png",
     },
     {
       title: "Raisa 'Sebuah Opera Kehidupan' Jakarta Finale",
@@ -109,7 +110,8 @@ async function main() {
       venue: "Gelora Bung Karno Stadium",
       isFree: false,
       price: 400000,
-      bannerUrl: "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684504/events/raisa-opera-kehidupan.jpg",
+      bannerUrl:
+        "https://res.cloudinary.com/kivc3ajv/image/upload/v1785693345/raisa-with-simphony_v7eshp.png",
     },
     {
       title: "The Script 'Greatest Hits' Live at GBK",
@@ -118,7 +120,8 @@ async function main() {
       venue: "Gelora Bung Karno Stadium",
       isFree: false,
       price: 380000,
-      bannerUrl: "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684522/events/the-script-greatest-hits.jpg",
+      bannerUrl:
+        "https://res.cloudinary.com/kivc3ajv/image/upload/v1785693062/the-script_skk88v.png",
     },
     {
       title: "Taylor Swift 'The Eras Tour' Jakarta Finale",
@@ -127,7 +130,8 @@ async function main() {
       venue: "Gelora Bung Karno Stadium",
       isFree: false,
       price: 450000,
-      bannerUrl: "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684515/events/taylor-swift-eras-tour.jpg",
+      bannerUrl:
+        "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684515/events/taylor-swift-eras-tour.jpg",
     },
     {
       title: "My Chemical Romance Live in Jakarta",
@@ -136,7 +140,8 @@ async function main() {
       venue: "Jakarta International Stadium",
       isFree: false,
       price: 320000,
-      bannerUrl: "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684502/events/my-chemical-romance.png",
+      bannerUrl:
+        "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684502/events/my-chemical-romance.png",
     },
     {
       title: "BLACKPINK 'Born Pink' Special Final Show Jakarta",
@@ -145,16 +150,18 @@ async function main() {
       venue: "Gelora Bung Karno Stadium",
       isFree: false,
       price: 500000,
-      bannerUrl: "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684474/events/blackpink-born-pink.jpg",
+      bannerUrl:
+        "https://res.cloudinary.com/kivc3ajv/image/upload/v1785693063/blackpink-born-pink_tkfiuc.png",
     },
     {
-      title: "BTS 'Epilogue: Reunion' World Tour Jakarta",
+      title: "BTS 'ARIRANG' World Tour Jakarta",
       category: categories[0],
       city: cities[0],
       venue: "Gelora Bung Karno Stadium",
       isFree: false,
       price: 480000,
-      bannerUrl: "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684475/events/bts-epilogue-reunion.jpg",
+      bannerUrl:
+        "https://res.cloudinary.com/kivc3ajv/image/upload/v1785693065/bts-arirang_aebc1n.png",
     },
     {
       title: "Isyana Saraswati 'Opera Maestro' Jakarta Grand Finale",
@@ -163,7 +170,8 @@ async function main() {
       venue: "Gelora Bung Karno Stadium",
       isFree: false,
       price: 420000,
-      bannerUrl: "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684494/events/isyana-saraswati-opera.jpg",
+      bannerUrl:
+        "https://res.cloudinary.com/kivc3ajv/image/upload/v1785693063/isyana-saraswati-opera_o6bwcg.png",
     },
     // ---- Technology Events ----
     {
@@ -173,7 +181,8 @@ async function main() {
       venue: "Gelora Bung Karno Stadium",
       isFree: false,
       price: 250000,
-      bannerUrl: "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684478/events/gopay-summit-fintech.jpg",
+      bannerUrl:
+        "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684478/events/gopay-summit-fintech.jpg",
     },
     {
       title: "KTT Inovasi GRAB Nusantara 2026: GRAB Ekosistem",
@@ -182,7 +191,8 @@ async function main() {
       venue: "Jakarta Convention Center",
       isFree: false,
       price: 280000,
-      bannerUrl: "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684482/events/grab-summit-innovation.jpg",
+      bannerUrl:
+        "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684482/events/grab-summit-innovation.jpg",
     },
     {
       title: "Summit Inovasi Indonesia 2026: Tokopedia Nusantara",
@@ -191,7 +201,8 @@ async function main() {
       venue: "Gelora Bung Karno Stadium",
       isFree: false,
       price: 200000,
-      bannerUrl: "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684526/events/tokopedia-summit-innovation.jpg",
+      bannerUrl:
+        "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684526/events/tokopedia-summit-innovation.jpg",
     },
     // ---- Business & Startup Events ----
     {
@@ -201,7 +212,8 @@ async function main() {
       venue: "Jakarta International Expo",
       isFree: false,
       price: 300000,
-      bannerUrl: "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684477/events/gopay-startup-innovation.jpg",
+      bannerUrl:
+        "https://res.cloudinary.com/kivc3ajv/image/upload/v1785692731/gopay-startup-innovation_qxwwvd.png",
     },
     {
       title: "Inovasi Global & Kemitraan GRAB: Ekosistem Digital",
@@ -210,7 +222,8 @@ async function main() {
       venue: "Jakarta Convention Center",
       isFree: false,
       price: 320000,
-      bannerUrl: "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684480/events/grab-startup-innovation.jpg",
+      bannerUrl:
+        "https://res.cloudinary.com/kivc3ajv/image/upload/v1785692731/gopay-startup-innovation_qxwwvd.png",
     },
     {
       title: "Inovasi Global & Kemitraan Tokopedia: Startup Summit",
@@ -219,7 +232,8 @@ async function main() {
       venue: "Jakarta International Expo",
       isFree: false,
       price: 270000,
-      bannerUrl: "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684524/events/tokopedia-startup-innovation.jpg",
+      bannerUrl:
+        "https://res.cloudinary.com/kivc3ajv/image/upload/v1785692731/tokopedia-startup-innovation_h4oa3u.png",
     },
     // ---- Sports Events ----
     {
@@ -229,7 +243,8 @@ async function main() {
       venue: "Jakarta Sports Complex",
       isFree: false,
       price: 150000,
-      bannerUrl: "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684472/events/billiard-golf-padel.png",
+      bannerUrl:
+        "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684472/events/billiard-golf-padel.png",
     },
     // ---- Arts & Culture Events ----
     {
@@ -239,7 +254,8 @@ async function main() {
       venue: "Jakarta Art Center",
       isFree: false,
       price: 180000,
-      bannerUrl: "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684466/events/art-seni-culture.png",
+      bannerUrl:
+        "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684466/events/art-seni-culture.png",
     },
     {
       title: "Tech Summit Indonesia 2026",
@@ -248,7 +264,8 @@ async function main() {
       venue: "Bandung Convention Center",
       isFree: false,
       price: 500000,
-      bannerUrl: "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684521/events/tech-summit-indonesia.png",
+      bannerUrl:
+        "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684521/events/tech-summit-indonesia.png",
     },
     // ---- Food & Drink Events ----
     {
@@ -258,7 +275,8 @@ async function main() {
       venue: "Pekanbaru Goverment Park",
       isFree: false,
       price: 0,
-      bannerUrl: "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684513/events/talamdurian.png",
+      bannerUrl:
+        "https://res.cloudinary.com/kivc3ajv/image/upload/v1785684513/events/talamdurian.png",
     },
   ];
 
