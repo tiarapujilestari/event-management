@@ -104,7 +104,7 @@ async function main() {
         "https://res.cloudinary.com/kivc3ajv/image/upload/v1785693064/marron5_z9kdqf.png",
     },
     {
-      title: "Raisa 'Sebuah Opera Kehidupan' Jakarta Finale",
+      title: "Raisa 'with Simphony' Jakarta Finale",
       category: categories[0],
       city: cities[0],
       venue: "Gelora Bung Karno Stadium",
@@ -324,8 +324,7 @@ async function main() {
         images: {
           create: [
             {
-              imageUrl:
-                "https://media.istockphoto.com/id/1806011581/id/foto/orang-orang-muda-yang-bahagia-menari-melompat-dan-bernyanyi-selama-konser-grup-favorit.jpg?s=2048x2048&w=is&k=20&c=Tv40w8gzaz9jU0zGNLjfphZp3Shjj8DPQXdFRuuJ4Xo=",
+              imageUrl: ev.bannerUrl,
               position: 0,
             },
           ],

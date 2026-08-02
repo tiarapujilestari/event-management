@@ -1,12 +1,33 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { api, setAccessToken, getAccessToken } from '../lib/api';
-import { User } from '../types';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
+import { api, setAccessToken, getAccessToken } from "../lib/api";
+import { User } from "../types";
 
 interface AuthContextValue {
   user: User | null;
   isLoading: boolean;
-  login: (email: string, password: string, rememberMe?: boolean) => Promise<void>;
-  register: (data: { fullName: string; email: string; password: string; role?: string; referralCode?: string }) => Promise<void>;
+  login: (
+    email: string,
+    password: string,
+    rememberMe?: boolean,
+  ) => Promise<void>;
+  loginWithGoogle: (
+    credential: string,
+    role?: string,
+    referralCode?: string,
+  ) => Promise<void>;
+  register: (data: {
+    fullName: string;
+    email: string;
+    password: string;
+    role?: string;
+    referralCode?: string;
+  }) => Promise<void>;
   logout: () => Promise<void>;
   refetchUser: () => Promise<void>;
 }
@@ -23,7 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(null);
         return;
       }
-      const { data } = await api.get('/auth/me');
+      const { data } = await api.get("/auth/me");
       setUser(data.data);
     } catch {
       setUser(null);
@@ -35,23 +56,57 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   async function login(email: string, password: string, rememberMe = false) {
-    const { data } = await api.post('/auth/login', { email, password, rememberMe });
+    const { data } = await api.post("/auth/login", {
+      email,
+      password,
+      rememberMe,
+    });
     setAccessToken(data.data.accessToken);
     setUser(data.data.user);
   }
 
-  async function register(payload: { fullName: string; email: string; password: string; role?: string; referralCode?: string }) {
-    await api.post('/auth/register', payload);
+  async function loginWithGoogle(
+    credential: string,
+    role?: string,
+    referralCode?: string,
+  ) {
+    const { data } = await api.post("/auth/google", {
+      credential,
+      role,
+      referralCode,
+    });
+    setAccessToken(data.data.accessToken);
+    setUser(data.data.user);
+  }
+
+  async function register(payload: {
+    fullName: string;
+    email: string;
+    password: string;
+    role?: string;
+    referralCode?: string;
+  }) {
+    await api.post("/auth/register", payload);
   }
 
   async function logout() {
-    await api.post('/auth/logout').catch(() => null);
+    await api.post("/auth/logout").catch(() => null);
     setAccessToken(null);
     setUser(null);
   }
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, register, logout, refetchUser: fetchMe }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isLoading,
+        login,
+        loginWithGoogle,
+        register,
+        logout,
+        refetchUser: fetchMe,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -59,6 +114,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 export function useAuth() {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used within AuthProvider');
+  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
   return ctx;
 }
