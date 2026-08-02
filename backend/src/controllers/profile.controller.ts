@@ -3,6 +3,8 @@ import { prisma } from '../config/db';
 import { asyncHandler } from '../middleware/asyncHandler';
 import { AuthRequest } from '../middleware/auth.middleware';
 import cloudinary from '../config/cloudinary';
+import { ApiError } from '../utils/ApiError';
+import { hashPassword, comparePassword } from '../utils/hash';
 
 // PUT /api/profile
 export const updateProfile = asyncHandler(async (req: AuthRequest, res: Response) => {
@@ -56,4 +58,29 @@ export const myPoints = asyncHandler(async (req: AuthRequest, res: Response) => 
   });
 
   res.json({ success: true, data: { balance, coupons } });
+});
+
+// PUT /api/profile/change-password
+export const changePassword = asyncHandler(async (req: AuthRequest, res: Response) => {
+  const { currentPassword, newPassword } = req.body;
+  const userId = req.user!.userId;
+
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+  if (!user) throw ApiError.notFound('User not found');
+
+  const isValid = await comparePassword(currentPassword, user.password);
+  if (!isValid) throw ApiError.badRequest('Current password is incorrect');
+
+  const isSame = await comparePassword(newPassword, user.password);
+  if (isSame) throw ApiError.badRequest('New password must be different from the current password');
+
+  const hashed = await hashPassword(newPassword);
+
+  // Invalidate refresh token so other sessions are logged out for security
+  await prisma.user.update({
+    where: { id: userId },
+    data: { password: hashed, refreshToken: null },
+  });
+
+  res.json({ success: true, message: 'Password changed successfully. Please log in again.' });
 });
