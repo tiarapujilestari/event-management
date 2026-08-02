@@ -40,11 +40,12 @@ export default function Landing() {
   return (
     <div>
       {/* Parallax Hero */}
-      <section 
+      <section
         className="relative py-24 overflow-hidden text-white bg-center bg-cover"
         style={{
-          backgroundImage: 'url(/images/hero_banner.png)',
-          backgroundAttachment: 'fixed'
+          backgroundImage:
+            "url(https://res.cloudinary.com/kivc3ajv/image/upload/v1785684493/events/hero_banner.png)",
+          backgroundAttachment: "fixed",
         }}
       >
         {/* Overlay untuk kontras teks */}
@@ -96,7 +97,7 @@ export default function Landing() {
           </motion.form>
         </div>
       </section>
-      <PromoMarquee/>
+      <PromoMarquee />
 
       {/* Categories */}
       <section className="px-4 py-12 mx-auto max-w-7xl lg:px-8">
@@ -121,14 +122,21 @@ export default function Landing() {
         </div>
         {loadingPopular ? (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {Array.from({ length: 4 }).map((_, i) => <EventCardSkeleton key={i} />)}
+            {Array.from({ length: 4 }).map((_, i) => (
+              <EventCardSkeleton key={i} />
+            ))}
           </div>
         ) : popular?.length ? (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {popular.map((e, i) => <EventCard key={e.id} event={e} index={i} />)}
+            {popular.map((e, i) => (
+              <EventCard key={e.id} event={e} index={i} />
+            ))}
           </div>
         ) : (
-          <EmptyState title="No events yet" message="Check back soon for exciting events." />
+          <EmptyState
+            title="No events yet"
+            message="Check back soon for exciting events."
+          />
         )}
       </section>
 
@@ -140,11 +148,15 @@ export default function Landing() {
         </div>
         {loadingUpcoming ? (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {Array.from({ length: 4 }).map((_, i) => <EventCardSkeleton key={i} />)}
+            {Array.from({ length: 4 }).map((_, i) => (
+              <EventCardSkeleton key={i} />
+            ))}
           </div>
         ) : upcoming?.length ? (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {upcoming.map((e, i) => <EventCard key={e.id} event={e} index={i} />)}
+            {upcoming.map((e, i) => (
+              <EventCard key={e.id} event={e} index={i} />
+            ))}
           </div>
         ) : (
           <EmptyState />
@@ -158,7 +170,9 @@ export default function Landing() {
             <Sparkles className="w-8 h-8 text-amber-300" />
             <div>
               <h3 className="text-xl font-bold">Have an event to host?</h3>
-              <p className="text-sm text-white/70">Create and sell tickets in minutes.</p>
+              <p className="text-sm text-white/70">
+                Create and sell tickets in minutes.
+              </p>
             </div>
           </div>
           <Link to="/register" className="btn-primary whitespace-nowrap">

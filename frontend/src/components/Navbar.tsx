@@ -35,12 +35,12 @@ export default function Navbar() {
         scrolled ? 'glass shadow-sm' : 'bg-transparent'
       )}
     >
-      <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 lg:px-8">
+      <div className="flex items-center gap-4 px-4 py-3 mx-auto max-w-7xl lg:px-8">
         <Link to="/" className="flex items-center gap-2 text-xl font-extrabold">
-          <span className="gradient-text">Eventify</span>
+          <span className="gradient-text">Festify</span>
         </Link>
 
-        <form onSubmit={handleSearch} className="relative hidden flex-1 max-w-md md:block">
+        <form onSubmit={handleSearch} className="relative flex-1 hidden max-w-md md:block">
           <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
           <input
             value={query}
@@ -50,38 +50,38 @@ export default function Navbar() {
           />
         </form>
 
-        <nav className="ml-auto hidden items-center gap-6 md:flex">
-          <Link to="/events" className="text-sm font-medium hover:text-brand-500 transition-colors">
+        <nav className="items-center hidden gap-6 ml-auto md:flex">
+          <Link to="/events" className="text-sm font-medium transition-colors hover:text-brand-500">
             Explore
           </Link>
           {user?.role === 'ORGANIZER' && (
-            <Link to="/organizer/dashboard" className="text-sm font-medium hover:text-brand-500 transition-colors">
+            <Link to="/organizer/dashboard" className="text-sm font-medium transition-colors hover:text-brand-500">
               Dashboard
             </Link>
           )}
           {user?.role === 'ADMIN' && (
-            <Link to="/admin/dashboard" className="text-sm font-medium hover:text-brand-500 transition-colors">
+            <Link to="/admin/dashboard" className="text-sm font-medium transition-colors hover:text-brand-500">
               Admin
             </Link>
           )}
 
-          <button onClick={() => setDark((d) => !d)} className="rounded-full p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800">
-            {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          <button onClick={() => setDark((d) => !d)} className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800">
+            {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
 
           {user ? (
             <div className="flex items-center gap-3">
-              <Link to="/wishlist" className="rounded-full p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800">
-                <Heart className="h-4 w-4" />
+              <Link to="/wishlist" className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800">
+                <Heart className="w-4 h-4" />
               </Link>
-              <Link to="/orders" className="rounded-full p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800">
-                <Ticket className="h-4 w-4" />
+              <Link to="/orders" className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800">
+                <Ticket className="w-4 h-4" />
               </Link>
-              <Link to="/profile" className="rounded-full p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800">
-                <UserIcon className="h-4 w-4" />
+              <Link to="/profile" className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800">
+                <UserIcon className="w-4 h-4" />
               </Link>
-              <button onClick={() => logout()} className="rounded-full p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800">
-                <LogOut className="h-4 w-4" />
+              <button onClick={() => logout()} className="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800">
+                <LogOut className="w-4 h-4" />
               </button>
             </div>
           ) : (
@@ -97,7 +97,7 @@ export default function Navbar() {
         </nav>
 
         <button className="ml-auto md:hidden" onClick={() => setMenuOpen((o) => !o)}>
-          {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
 

@@ -12,6 +12,7 @@
     "prisma:deploy": "prisma migrate deploy",
     "prisma:seed": "ts-node prisma/seed.ts",
     "prisma:studio": "prisma studio",
+    "upload:images": "ts-node scripts/upload-images-to-cloudinary.ts",
     "test": "jest --runInBand",
     "test:watch": "jest --watch"
   },

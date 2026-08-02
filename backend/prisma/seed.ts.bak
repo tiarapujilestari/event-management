@@ -11,40 +11,26 @@ async function main() {
   console.log('Seeding database...');
 
   // ---- Categories ----
-  const categories = [];
-  for (const name of [
-    "Music",
-    "Technology",
-    "Business",
-    "Sports",
-    "Arts & Culture",
-    "Food & Drink",
-  ]) {
-    const category = await prisma.category.upsert({
-      where: { name },
-      update: {},
-      create: { name, slug: name.toLowerCase().replace(/[^a-z0-9]+/g, "-") },
-    });
-    categories.push(category);
-  }
+  const categories = await Promise.all(
+    ['Music', 'Technology', 'Business', 'Sports', 'Arts & Culture', 'Food & Drink'].map((name) =>
+      prisma.category.upsert({
+        where: { name },
+        update: {},
+        create: { name, slug: name.toLowerCase().replace(/[^a-z0-9]+/g, '-') },
+      })
+    )
+  );
 
   // ---- Cities ----
-  const cities = [];
-  for (const name of [
-    "Jakarta",
-    "Bandung",
-    "Surabaya",
-    "Yogyakarta",
-    "Bali",
-    "Pekanbaru",
-  ]) {
-    const city = await prisma.city.upsert({
-      where: { name },
-      update: {},
-      create: { name, province: name, country: "Indonesia" },
-    });
-    cities.push(city);
-  }
+  const cities = await Promise.all(
+    ['Jakarta', 'Bandung', 'Surabaya', 'Yogyakarta', 'Bali', 'Pekanbaru'].map((name) =>
+      prisma.city.upsert({
+        where: { name },
+        update: {},
+        create: { name, province: name, country: 'Indonesia' },
+      })
+    )
+  );
 
   // ---- Admin ----
   const adminPassword = await bcrypt.hash('Admin123!', 10);
