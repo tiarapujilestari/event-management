@@ -7,6 +7,12 @@ export interface User {
   role: Role;
   referralCode: string;
   isVerified: boolean;
+  profile?: {
+    avatarUrl?: string | null;
+    phone?: string | null;
+    address?: string | null;
+    bio?: string | null;
+  } | null;
 }
 
 export interface Category {
