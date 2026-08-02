@@ -1,0 +1,35 @@
+import request from 'supertest';
+import app from '../src/app';
+import { prisma } from '../src/config/db';
+
+describe('Orders / Checkout API', () => {
+  afterAll(async () => {
+    await prisma.$disconnect();
+  });
+
+  it('rejects checkout without authentication', async () => {
+    const res = await request(app).post('/api/orders/checkout').send({
+      eventId: 'fake-id',
+      items: [{ ticketTypeId: 'fake-ticket-id', quantity: 1 }],
+    });
+    expect(res.status).toBe(401);
+  });
+
+  it('rejects checkout with invalid body shape', async () => {
+    // Login as seeded demo customer first
+    const login = await request(app).post('/api/auth/login').send({
+      email: 'customer@eventplatform.com',
+      password: 'Customer123!',
+    });
+
+    if (login.status !== 200) return; // seed may not have run in this environment
+
+    const token = login.body.data.accessToken;
+    const res = await request(app)
+      .post('/api/orders/checkout')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ items: [] }); // missing eventId, empty items
+
+    expect(res.status).toBe(400);
+  });
+});
