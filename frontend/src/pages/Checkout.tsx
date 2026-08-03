@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { Ticket, Tag, Coins, Loader2 } from 'lucide-react';
 import { api } from '../lib/api';
-import { formatCurrency } from '../lib/utils';
 
 interface LocationState {
   eventId: string;
@@ -16,6 +15,7 @@ interface LocationState {
 export default function Checkout() {
   const location = useLocation();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const state = location.state as LocationState | undefined;
 
   const [voucherCode, setVoucherCode] = useState('');
@@ -38,19 +38,14 @@ export default function Checkout() {
       });
       return data.data;
     },
-    onSuccess: async (order) => {
-      try {
-        const { data } = await api.post(`/payments/${order.id}/create`);
-        if (data.data.paymentUrl) {
-          window.location.href = data.data.paymentUrl;
-        } else {
-          toast.success('Order created!');
-          navigate(`/orders`);
-        }
-      } catch {
-        toast.success('Order created. Complete payment from your orders page.');
-        navigate('/orders');
-      }
+    onSuccess: () => {
+      // No payment gateway anymore — the order just sits as PENDING until
+      // the customer uploads their transfer proof from the My Tickets page.
+      // Invalidate the cached orders list so it doesn't show a stale
+      // (possibly empty) result when we navigate there.
+      queryClient.invalidateQueries({ queryKey: ['my-orders'] });
+      toast.success('Order placed! Please complete your payment from My Tickets.');
+      navigate('/orders');
     },
     onError: (err: any) => toast.error(err.response?.data?.message || 'Checkout failed'),
   });
@@ -100,11 +95,11 @@ export default function Checkout() {
           className="btn-primary w-full"
         >
           {checkoutMutation.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
-          Proceed to Payment
+          Place Order
         </button>
 
         <p className="mt-3 text-center text-xs text-neutral-400">
-          You'll be redirected to Midtrans to complete your payment securely.
+          You'll be able to upload your bank transfer proof from the My Tickets page.
         </p>
       </motion.div>
     </div>

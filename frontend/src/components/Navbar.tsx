@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Menu, X, User as UserIcon, Heart, Ticket, LogOut, Moon, Sun } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { cn } from '../lib/utils';
+import { useDebouncedValue } from '../lib/useDebouncedValue';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -12,6 +13,10 @@ export default function Navbar() {
   const [query, setQuery] = useState('');
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+
+  // Debounce the navbar quick-search: wait for the user to stop typing
+  // for 500ms before actually navigating, instead of firing on every keystroke.
+  const debouncedQuery = useDebouncedValue(query, 500);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -23,9 +28,16 @@ export default function Navbar() {
     document.documentElement.classList.toggle('dark', dark);
   }, [dark]);
 
+  useEffect(() => {
+    if (debouncedQuery.trim()) {
+      navigate(`/events?search=${encodeURIComponent(debouncedQuery.trim())}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedQuery]);
+
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
-    navigate(`/events?search=${encodeURIComponent(query)}`);
+    if (query.trim()) navigate(`/events?search=${encodeURIComponent(query.trim())}`);
   }
 
   return (

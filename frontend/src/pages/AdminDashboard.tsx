@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { Users, Calendar, DollarSign, Receipt, Trash2 } from 'lucide-react';
+import { Users, Calendar, DollarSign, Receipt, Trash2, ImageIcon, CheckCircle2 } from 'lucide-react';
 import { api } from '../lib/api';
 import { formatCurrency } from '../lib/utils';
 import { ConfirmDialog } from '../components/Shared';
@@ -17,11 +17,30 @@ function StatCard({ icon: Icon, label, value }: { icon: any; label: string; valu
   );
 }
 
+const statusStyles: Record<string, string> = {
+  PENDING: 'bg-amber-100 text-amber-700',
+  WAITING_CONFIRMATION: 'bg-blue-100 text-blue-700',
+  PAID: 'bg-green-100 text-green-700',
+  CANCELLED: 'bg-neutral-200 text-neutral-600',
+  EXPIRED: 'bg-red-100 text-red-700',
+  REFUNDED: 'bg-blue-100 text-blue-700',
+};
+
+const statusLabels: Record<string, string> = {
+  PENDING: 'Waiting for payment',
+  WAITING_CONFIRMATION: 'Waiting for confirmation',
+  PAID: 'Paid',
+  CANCELLED: 'Cancelled',
+  EXPIRED: 'Expired',
+  REFUNDED: 'Refunded',
+};
+
 type Tab = 'users' | 'events' | 'transactions';
 
 export default function AdminDashboard() {
   const [tab, setTab] = useState<Tab>('users');
   const [deleteUserId, setDeleteUserId] = useState<string | null>(null);
+  const [confirmOrderId, setConfirmOrderId] = useState<string | null>(null);
   const queryClient = useQueryClient();
 
   const { data: stats } = useQuery({
@@ -62,6 +81,18 @@ export default function AdminDashboard() {
       toast.success('Event status updated');
       queryClient.invalidateQueries({ queryKey: ['admin-events'] });
     },
+  });
+
+  // Admin has checked the receipt on Cloudinary and it matches — mark it paid
+  const confirmPaymentMutation = useMutation({
+    mutationFn: async (id: string) => api.patch(`/admin/transactions/${id}/confirm`),
+    onSuccess: () => {
+      toast.success('Payment confirmed, tickets issued to the customer');
+      queryClient.invalidateQueries({ queryKey: ['admin-transactions'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-dashboard'] });
+      setConfirmOrderId(null);
+    },
+    onError: (err: any) => toast.error(err.response?.data?.message || 'Failed to confirm payment'),
   });
 
   return (
@@ -143,7 +174,15 @@ export default function AdminDashboard() {
         <div className="overflow-x-auto rounded-2xl border border-neutral-100 dark:border-neutral-800">
           <table className="w-full text-sm">
             <thead className="bg-neutral-50 dark:bg-neutral-800 text-left">
-              <tr><th className="p-3"><Receipt className="inline h-3.5 w-3.5" /> Invoice</th><th className="p-3">User</th><th className="p-3">Event</th><th className="p-3">Total</th><th className="p-3">Status</th></tr>
+              <tr>
+                <th className="p-3"><Receipt className="inline h-3.5 w-3.5" /> Invoice</th>
+                <th className="p-3">User</th>
+                <th className="p-3">Event</th>
+                <th className="p-3">Total</th>
+                <th className="p-3">Status</th>
+                <th className="p-3">Proof</th>
+                <th className="p-3">Actions</th>
+              </tr>
             </thead>
             <tbody>
               {transactions?.map((t: any) => (
@@ -152,7 +191,35 @@ export default function AdminDashboard() {
                   <td className="p-3">{t.user?.fullName}</td>
                   <td className="p-3">{t.event?.title}</td>
                   <td className="p-3">{formatCurrency(t.total)}</td>
-                  <td className="p-3">{t.status}</td>
+                  <td className="p-3">
+                    <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${statusStyles[t.status]}`}>
+                      {statusLabels[t.status] || t.status}
+                    </span>
+                  </td>
+                  <td className="p-3">
+                    {t.payment?.proofUrl ? (
+                      <a
+                        href={t.payment.proofUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1 text-xs font-medium text-brand-500 hover:underline"
+                      >
+                        <ImageIcon className="h-3.5 w-3.5" /> View proof
+                      </a>
+                    ) : (
+                      <span className="text-xs text-neutral-400">—</span>
+                    )}
+                  </td>
+                  <td className="p-3">
+                    {t.status === 'WAITING_CONFIRMATION' && (
+                      <button
+                        onClick={() => setConfirmOrderId(t.id)}
+                        className="btn-primary !px-2 !py-1 text-xs"
+                      >
+                        <CheckCircle2 className="h-3 w-3" /> Confirm Payment
+                      </button>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -168,6 +235,15 @@ export default function AdminDashboard() {
         confirmLabel="Delete"
         onCancel={() => setDeleteUserId(null)}
         onConfirm={() => deleteUserId && deleteUserMutation.mutate(deleteUserId)}
+      />
+
+      <ConfirmDialog
+        open={!!confirmOrderId}
+        title="Confirm this payment?"
+        message="Make sure you've checked the transfer proof on Cloudinary and it matches the order total before confirming. This will mark the order as paid and issue the customer's tickets."
+        confirmLabel="Confirm Payment"
+        onCancel={() => setConfirmOrderId(null)}
+        onConfirm={() => confirmOrderId && confirmPaymentMutation.mutate(confirmOrderId)}
       />
     </div>
   );

@@ -16,6 +16,7 @@ router.get('/events', adminController.listAllEvents);
 router.patch('/events/:id/status', adminController.updateEventStatus);
 
 router.get('/transactions', adminController.listAllTransactions);
+router.patch('/transactions/:id/confirm', adminController.confirmPayment);
 
 router.post('/categories', adminController.createCategory);
 router.delete('/categories/:id', adminController.deleteCategory);

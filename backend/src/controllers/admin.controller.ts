@@ -92,7 +92,11 @@ export const listAllTransactions = asyncHandler(async (req: AuthRequest, res: Re
   const [transactions, total] = await Promise.all([
     prisma.order.findMany({
       where,
-      include: { user: { select: { fullName: true, email: true } }, event: { select: { title: true } } },
+      include: {
+        user: { select: { fullName: true, email: true } },
+        event: { select: { title: true } },
+        payment: { select: { proofUrl: true, status: true } },
+      },
       skip: (pageNum - 1) * limitNum,
       take: limitNum,
       orderBy: { createdAt: 'desc' },
@@ -101,6 +105,44 @@ export const listAllTransactions = asyncHandler(async (req: AuthRequest, res: Re
   ]);
 
   res.json({ success: true, data: transactions, pagination: { page: pageNum, limit: limitNum, total, totalPages: Math.ceil(total / limitNum) } });
+});
+
+// PATCH /api/admin/transactions/:id/confirm
+// Admin has checked the payment proof on Cloudinary and it matches the
+// transfer. This marks the order as paid and issues the tickets.
+export const confirmPayment = asyncHandler(async (req: AuthRequest, res: Response) => {
+  const order = await prisma.order.findUnique({
+    where: { id: req.params.id },
+    include: { items: true, payment: true },
+  });
+  if (!order) throw ApiError.notFound('Order not found');
+  if (order.status !== 'WAITING_CONFIRMATION') {
+    throw ApiError.badRequest('This order is not waiting for payment confirmation');
+  }
+
+  const updated = await prisma.$transaction(async (tx) => {
+    if (order.payment) {
+      await tx.payment.update({ where: { id: order.payment.id }, data: { status: 'PAID' } });
+    }
+
+    const paidOrder = await tx.order.update({
+      where: { id: order.id },
+      data: { status: 'PAID', paidAt: new Date() },
+    });
+
+    // Only now (payment confirmed) do we actually issue the tickets
+    for (const item of order.items) {
+      const ticketsData = Array.from({ length: item.quantity }).map(() => ({
+        ticketTypeId: item.ticketTypeId,
+        orderItemId: item.id,
+      }));
+      await tx.ticket.createMany({ data: ticketsData });
+    }
+
+    return paidOrder;
+  });
+
+  res.json({ success: true, message: 'Payment confirmed. Tickets have been issued.', data: updated });
 });
 
 // CRUD categories

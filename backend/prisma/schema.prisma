@@ -30,6 +30,7 @@ enum EventStatus {
 
 enum TransactionStatus {
   PENDING
+  WAITING_CONFIRMATION
   PAID
   CANCELLED
   EXPIRED
@@ -249,16 +250,14 @@ model OrderItem {
 }
 
 model Payment {
-  id              String            @id @default(uuid())
-  orderId         String            @unique
-  order           Order             @relation(fields: [orderId], references: [id])
-  midtransOrderId String            @unique
-  paymentMethod   String?
-  paymentUrl      String?
-  status          TransactionStatus @default(PENDING)
-  rawResponse     Json?
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
+  id            String            @id @default(uuid())
+  orderId       String            @unique
+  order         Order             @relation(fields: [orderId], references: [id])
+  paymentMethod String            @default("BANK_TRANSFER")
+  proofUrl      String?           // link Cloudinary hasil upload bukti transfer
+  status        TransactionStatus @default(PENDING)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
 
   @@map("payments")
 }

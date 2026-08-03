@@ -6,15 +6,7 @@ import { api } from '../lib/api';
 import { EventItem, Category, City } from '../types';
 import EventCard from '../components/EventCard';
 import { EventCardSkeleton, EmptyState } from '../components/Shared';
-
-function useDebouncedValue<T>(value: T, delay = 500): T {
-  const [debounced, setDebounced] = useState(value);
-  useEffect(() => {
-    const timer = setTimeout(() => setDebounced(value), delay);
-    return () => clearTimeout(timer);
-  }, [value, delay]);
-  return debounced;
-}
+import { useDebouncedValue } from '../lib/useDebouncedValue';
 
 export default function Events() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -28,6 +20,12 @@ export default function Events() {
   const sort = searchParams.get('sort') || 'newest';
   const minPrice = searchParams.get('minPrice') || '';
   const maxPrice = searchParams.get('maxPrice') || '';
+
+  // Keep the search input in sync if the URL changes from elsewhere (e.g. navbar search)
+  useEffect(() => {
+    setSearchInput(searchParams.get('search') || '');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams.get('search')]);
 
   useEffect(() => {
     setPage(1);
