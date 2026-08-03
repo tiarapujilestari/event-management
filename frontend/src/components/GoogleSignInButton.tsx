@@ -47,7 +47,6 @@ export default function GoogleSignInButton({ onCredential, disabled }: Props) {
       });
     }
 
-    // The GSI script loads async — poll briefly until window.google is available
     if (window.google) {
       render();
     } else {
@@ -59,7 +58,6 @@ export default function GoogleSignInButton({ onCredential, disabled }: Props) {
       }, 200);
       return () => clearInterval(interval);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [disabled]);
 
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;

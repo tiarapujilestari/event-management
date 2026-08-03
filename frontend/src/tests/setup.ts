@@ -1,4 +1,4 @@
-import '@testing-library/jest-dom';
+import "@testing-library/jest-dom";
 
 // jsdom doesn't implement IntersectionObserver, which Framer Motion's
 // `whileInView` relies on. Provide a minimal stub for tests.
@@ -10,5 +10,5 @@ class IntersectionObserverStub {
     return [];
   }
 }
-// @ts-expect-error - test environment polyfill
+// @ts-expect-error
 global.IntersectionObserver = IntersectionObserverStub;

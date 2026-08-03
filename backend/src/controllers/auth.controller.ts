@@ -18,12 +18,6 @@ const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const REFRESH_COOKIE = "refreshToken";
 
-// When the frontend and backend live on different domains (e.g. frontend on
-// Vercel, backend tunneled through ngrok for a demo), the refresh cookie has
-// to be SameSite=None + Secure or the browser will silently refuse to send
-// it back on cross-site requests. Set CROSS_SITE_COOKIES=true in the backend
-// .env only when demoing through a tunnel/deployment — leave it unset for
-// normal localhost-to-localhost development, where SameSite=Lax is safer.
 const isCrossSite = process.env.CROSS_SITE_COOKIES === "true";
 
 function setRefreshCookie(res: Response, token: string, rememberMe = false) {
@@ -84,7 +78,7 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
         },
       });
 
-      // New user gets 10% discount coupon, expires in 3 months
+      // user baru 10% kupon diskon
       await tx.coupon.create({
         data: {
           userId: created.id,
@@ -192,12 +186,9 @@ export const logout = asyncHandler(async (req: AuthRequest, res: Response) => {
         where: { id: payload.userId },
         data: { refreshToken: null },
       });
-    } catch {
-      /* ignore */
-    }
+    } catch {}
   }
-  // Must match the same options used when the cookie was set, or the
-  // browser won't recognize it as the same cookie and won't clear it.
+
   res.clearCookie(REFRESH_COOKIE, {
     httpOnly: true,
     secure: isCrossSite || process.env.NODE_ENV === "production",
@@ -212,7 +203,6 @@ export const forgotPassword = asyncHandler(
     const { email } = req.body;
     const user = await prisma.user.findUnique({ where: { email } });
 
-    // Always respond success to avoid user enumeration
     if (!user) {
       return res.json({
         success: true,
@@ -284,7 +274,6 @@ export const me = asyncHandler(async (req: AuthRequest, res: Response) => {
 });
 
 // POST /api/auth/google
-// Body: { credential } — the ID token JWT returned by Google Identity Services on the frontend
 export const googleAuth = asyncHandler(async (req: Request, res: Response) => {
   const { credential, role, referralCode } = req.body;
   if (!credential) throw ApiError.badRequest("Missing Google credential");
@@ -313,9 +302,6 @@ export const googleAuth = asyncHandler(async (req: Request, res: Response) => {
   let user = await prisma.user.findUnique({ where: { email: payload.email } });
 
   if (!user) {
-    // First time signing in with this Google account — create a new user.
-    // Google already verifies the account owns the email, so mark isVerified true.
-    // Password is set to an unusable random hash since this account only signs in via Google.
     let referrer = null;
     if (referralCode) {
       referrer = await prisma.user.findUnique({ where: { referralCode } });

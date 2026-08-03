@@ -11,19 +11,15 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "moduleResolution": "node",
-    "ignoreDeprecations": "6.0",
+    "ignoreDeprecations": "5.0",
     "declaration": false,
     "sourceMap": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "types": ["jest", "node"]
   },
-  "include": [
-    "src/**/*.ts",
-    "prisma/**/*.ts",
-    "tests/**/*.ts",
-    "scripts/**/*.ts"
-  ],
+  "include": ["src/**/*", "prisma/**/*", "tests/**/*", "scripts/**/*"],
   "exclude": ["node_modules", "dist"]
 }
