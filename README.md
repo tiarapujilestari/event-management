@@ -58,7 +58,6 @@ Demo accounts created by the seed script:
 
 | Role      | Email                          | Password       |
 |-----------|---------------------------------|-----------------|
-| Admin     | admin@eventplatform.com         | Admin123!       |
 | Organizer | organizer@eventplatform.com     | Organizer123!   |
 | Customer  | customer@eventplatform.com      | Customer123!    |
 

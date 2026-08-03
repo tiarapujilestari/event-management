@@ -7,14 +7,14 @@ html, body {
 }
 
 ::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-thumb { @apply bg-neutral-300 dark:bg-neutral-700 rounded-full; }
+::-webkit-scrollbar-thumb { @apply rounded-full bg-neutral-300 dark:bg-neutral-700; }
 
 .glass {
-  @apply bg-white/70 dark:bg-neutral-900/60 backdrop-blur-md border border-white/40 dark:border-white/10;
+  @apply border bg-orange-50/80 dark:bg-neutral-900/60 backdrop-blur-md border-orange-100/60 dark:border-white/10;
 }
 
 .gradient-text {
-  @apply bg-gradient-to-r from-brand-500 to-orange-400 bg-clip-text text-transparent;
+  @apply text-transparent bg-gradient-to-r from-brand-500 to-orange-400 bg-clip-text;
 }
 
 .btn-primary {
@@ -26,7 +26,7 @@ html, body {
 }
 
 .card {
-  @apply rounded-2xl border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm transition-all hover:shadow-xl hover:-translate-y-1;
+  @apply transition-all bg-white border shadow-sm rounded-2xl border-neutral-100 dark:border-neutral-800 dark:bg-neutral-900 hover:shadow-xl hover:-translate-y-1;
 }
 
 .input {

@@ -84,7 +84,7 @@ export default function Register() {
       >
         <h1 className="mb-1 text-2xl font-extrabold">Create your account</h1>
         <p className="mb-6 text-sm text-neutral-500">
-          Join Eventify to discover and host amazing events.
+          Join Festify to discover and host amazing events.
         </p>
 
         {/* Social sign-up */}

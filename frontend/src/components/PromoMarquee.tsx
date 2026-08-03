@@ -38,7 +38,7 @@ function MarqueeTrack() {
 
 export default function PromoMarquee() {
   return (
-    <div className="py-4 overflow-hidden bg-white border-y border-neutral-100 dark:border-neutral-800 dark:bg-neutral-950">
+    <div className="py-4 overflow-hidden border-orange-100 border-y bg-amber-50/50 dark:border-neutral-800 dark:bg-neutral-950">
       <div className="group flex w-max animate-marquee hover:[animation-play-state:paused]">
         <MarqueeTrack />
         <MarqueeTrack />
