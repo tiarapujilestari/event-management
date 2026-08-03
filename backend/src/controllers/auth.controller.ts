@@ -18,11 +18,19 @@ const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const REFRESH_COOKIE = "refreshToken";
 
+// When the frontend and backend live on different domains (e.g. frontend on
+// Vercel, backend tunneled through ngrok for a demo), the refresh cookie has
+// to be SameSite=None + Secure or the browser will silently refuse to send
+// it back on cross-site requests. Set CROSS_SITE_COOKIES=true in the backend
+// .env only when demoing through a tunnel/deployment — leave it unset for
+// normal localhost-to-localhost development, where SameSite=Lax is safer.
+const isCrossSite = process.env.CROSS_SITE_COOKIES === "true";
+
 function setRefreshCookie(res: Response, token: string, rememberMe = false) {
   res.cookie(REFRESH_COOKIE, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    secure: isCrossSite || process.env.NODE_ENV === "production",
+    sameSite: isCrossSite ? "none" : "lax",
     maxAge: (rememberMe ? 30 : 7) * 24 * 60 * 60 * 1000,
   });
 }
@@ -188,7 +196,13 @@ export const logout = asyncHandler(async (req: AuthRequest, res: Response) => {
       /* ignore */
     }
   }
-  res.clearCookie(REFRESH_COOKIE);
+  // Must match the same options used when the cookie was set, or the
+  // browser won't recognize it as the same cookie and won't clear it.
+  res.clearCookie(REFRESH_COOKIE, {
+    httpOnly: true,
+    secure: isCrossSite || process.env.NODE_ENV === "production",
+    sameSite: isCrossSite ? "none" : "lax",
+  });
   res.json({ success: true, message: "Logged out successfully" });
 });
 

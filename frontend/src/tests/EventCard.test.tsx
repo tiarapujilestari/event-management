@@ -38,7 +38,11 @@ describe('EventCard', () => {
       </BrowserRouter>
     );
 
+    // EventCard.tsx falls back to a placehold.co placeholder image when no
+    // bannerUrl is set. There used to be a local /images/default-event.svg
+    // fallback, but that file (and the rest of the local /public/images
+    // assets) was removed once all event images moved to Cloudinary.
     const image = screen.getByAltText('Sample Music Festival');
-    expect(image).toHaveAttribute('src', '/images/default-event.svg');
+    expect(image).toHaveAttribute('src', 'https://placehold.co/600x450/f5f5f5/a3a3a3?text=No+Image');
   });
 });
