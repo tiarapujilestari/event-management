@@ -154,7 +154,13 @@ export default function EventDetail() {
                 width="100%"
                 height="100%"
                 loading="lazy"
-                src={`https://www.google.com/maps?q=${event.latitude || 0},${event.longitude || 0}&z=15&output=embed`}
+                src={
+                  event.latitude && event.longitude
+                    ? `https://www.google.com/maps?q=${event.latitude},${event.longitude}&z=15&output=embed`
+                    : `https://www.google.com/maps?q=${encodeURIComponent(
+                        `${event.venue}, ${event.location}`,
+                      )}&z=15&output=embed`
+                }
               />
             </div>
           </section>
