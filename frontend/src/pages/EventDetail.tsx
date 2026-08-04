@@ -158,7 +158,7 @@ export default function EventDetail() {
                   event.latitude && event.longitude
                     ? `https://www.google.com/maps?q=${event.latitude},${event.longitude}&z=15&output=embed`
                     : `https://www.google.com/maps?q=${encodeURIComponent(
-                        `${event.venue}, ${event.location}`,
+                        `${event.venue}, ${event.city?.name ?? ""}`,
                       )}&z=15&output=embed`
                 }
               />
