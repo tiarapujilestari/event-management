@@ -28,7 +28,19 @@ const app = express();
 app.use(helmet());
 app.use(
   cors({
-    origin: ["https://festify-psi.vercel.app", "http://localhost:5173"],
+    origin: (origin, callback) => {
+      console.log("Incoming origin:", origin);
+      const allowed = [
+        "https://festifyid.vercel.app",
+        "https://festify-psi.vercel.app",
+        "http://localhost:5173",
+      ];
+      if (!origin || allowed.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   }),
 );

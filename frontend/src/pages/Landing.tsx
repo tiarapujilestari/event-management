@@ -44,7 +44,7 @@ export default function Landing() {
         className="relative py-24 overflow-hidden text-white bg-center bg-cover"
         style={{
           backgroundImage:
-            "url(https://res.cloudinary.com/kivc3ajv/image/upload/v1785684493/events/hero_banner.png)",
+            "url(https://res.cloudinary.com/kivc3ajv/image/upload/v1785801693/hero_banner_jg7jxk.png)",
           backgroundAttachment: "fixed",
         }}
       >
