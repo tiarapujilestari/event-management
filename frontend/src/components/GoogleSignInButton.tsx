@@ -26,6 +26,7 @@ interface Props {
 
 export default function GoogleSignInButton({ onCredential, disabled }: Props) {
   const buttonRef = useRef<HTMLDivElement>(null);
+  const initializedRef = useRef(false); // guard: cegah initialize() dipanggil berkali-kali
 
   useEffect(() => {
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
@@ -34,10 +35,19 @@ export default function GoogleSignInButton({ onCredential, disabled }: Props) {
 
     function render() {
       if (!window.google || !buttonRef.current) return;
-      window.google.accounts.id.initialize({
-        client_id: clientId,
-        callback: (response) => onCredential(response.credential),
-      });
+
+      // hanya panggil initialize() sekali per lifecycle komponen
+      if (!initializedRef.current) {
+        window.google.accounts.id.initialize({
+          client_id: clientId,
+          callback: (response) => onCredential(response.credential),
+        });
+        initializedRef.current = true;
+      }
+
+      // renderButton aman dipanggil ulang, tapi kosongkan dulu supaya
+      // tidak dobel render tombolnya di dalam div yang sama
+      buttonRef.current.innerHTML = "";
       window.google.accounts.id.renderButton(buttonRef.current, {
         theme: "outline",
         size: "large",
@@ -58,7 +68,7 @@ export default function GoogleSignInButton({ onCredential, disabled }: Props) {
       }, 200);
       return () => clearInterval(interval);
     }
-  }, [disabled]);
+  }, [disabled, onCredential]);
 
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
   const notConfigured = !clientId || clientId.includes("your_google_client_id");
