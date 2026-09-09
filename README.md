@@ -43,15 +43,13 @@ The app **runs without** Midtrans/Cloudinary/SMTP configured — payments will e
 ```bash
 cd backend
 cp .env.example .env
-# Edit .env and paste your Neon DATABASE_URL, and set two random long strings for
-# JWT_ACCESS_SECRET and JWT_REFRESH_SECRET (e.g. `openssl rand -hex 32`)
 
 npm install
 npx prisma generate
-npx prisma migrate dev --name init   # creates all tables in your Neon database
-npx prisma db seed                   # seeds categories, cities, demo users, sample events
+npx prisma migrate dev --name init  
+npx prisma db seed                   
 
-npm run dev                          # starts API on http://localhost:8000
+npm run dev                          
 ```
 
 Demo accounts created by the seed script:
@@ -69,10 +67,9 @@ Health check: http://localhost:8000/health
 ```bash
 cd frontend
 cp .env.example .env
-# VITE_API_URL defaults to http://localhost:8000/api — change if your backend runs elsewhere
 
 npm install
-npm run dev                          # starts app on http://localhost:5173
+npm run dev                         
 ```
 
 Open http://localhost:5173 and log in with any of the demo accounts above.
@@ -80,10 +77,7 @@ Open http://localhost:5173 and log in with any of the demo accounts above.
 ## 4. Running tests
 
 ```bash
-# Backend (Jest + Supertest) — requires DATABASE_URL configured in .env
 cd backend && npm test
-
-# Frontend (Vitest + React Testing Library)
 cd frontend && npm test
 ```
 
